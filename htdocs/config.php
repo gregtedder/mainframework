@@ -27,7 +27,7 @@
  *
  * This is what links the local domain to the shared framework
  */
-define('MAIN_FRAME_WORK', '/Path/To/mainframe/mfw/config/config.php');
+define('MAIN_FRAME_WORK', '/Path/To/mainframework/mfw/config/config.php');
 
 include MAIN_FRAME_WORK;
 

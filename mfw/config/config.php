@@ -27,7 +27,7 @@
  * 
  * No Trailing "/"
  */
-DEFINE('MFW_PATH', '/Path/To/mainframe');
+DEFINE('MFW_PATH', '/Path/To/mainframework');
 
 /*
  * Now initialize what is considered the engine
