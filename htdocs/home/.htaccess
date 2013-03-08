@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Allow certain resources public folder access
+RewriteCond %{SCRIPT_FILENAME} (.*\.png$|.*\.css|.*\.js|.*\.gif) [NC]  
+RewriteRule ^(.*)$ $1 [L]
+
+# Use this to simply route from php
+RewriteRule ^(.*)$ main.php?parms=$1 [L,QSA] 
