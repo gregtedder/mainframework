@@ -11,11 +11,14 @@ To configure ...
 
 2. Enable mod_rewrite in apache
 
-3. Configure rootdir/mfw/config/config.php file.
+3. Configure rootdir/mfw/config/config.sample.php file.
+   Then rename the file config.php
 
-4. Configure rootdir/mfw/config/database.php file. 
+4. Configure rootdir/mfw/config/database.sample.php file. 
+   Then rename the file database.php
 
-5. Configure rootdir/htdocs/config.php file to point to the config file in point 3.
+5. Configure rootdir/htdocs/config.sample.php file to point to the config file in point 3.
+   Then rename the file config.php
 
 6. Try it out.
 
