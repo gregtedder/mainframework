@@ -50,13 +50,10 @@ function createException( $errno, $errstr, $errfile, $errline ) {
 }
 //set_error_handler('createException');
 
-/**
- *
- * Autoload the framework files
- */
-function __autoload ($class) {
+spl_autoload_register(function ($class) {
     $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
 	include ($class . '.php');
-}
+});
+
 
 ?>
