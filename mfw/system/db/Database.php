@@ -70,7 +70,7 @@ class Database extends \mfw\system\db\DatabaseAdapter {
 				$this->dbEngine = new \mfw\system\db\engines\mysql\MysqlEngine();
 				break;
 			default:
-				throw new Exception("DB_ENGINE is not configured correctly. Look in config/database.php");
+				throw new \Exception("DB_ENGINE is not configured correctly. Look in config/database.php");
 				break;
 		}
 		$this->dbEngine->connect();
