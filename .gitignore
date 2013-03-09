@@ -1,2 +1,7 @@
 .project
 .DS_Store
+
+# Hide active configuration files
+htdocs/config.php
+mfw/config/config.php
+mfw/config/database.php
