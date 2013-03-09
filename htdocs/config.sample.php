@@ -29,6 +29,8 @@
  */
 define('MAIN_FRAME_WORK', '/Path/To/mainframework/mfw/config/config.php');
 
+define('DOC_ROOT', __DIR__);
+
 include MAIN_FRAME_WORK;
 
 ?>

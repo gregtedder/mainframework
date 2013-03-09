@@ -24,57 +24,7 @@
 
 include '../config.php';
 
-if($_REQUEST['parms'] == '') {
-	throw new Exception('404 File not found');
-} else {
-	$params = explode('/', $_REQUEST['parms']);
-	
-	$app = $params[0];
-	
-	if(empty($params[1])) 
-		$module = 'index';
-	else
-		$module = $params[1];
-	
-	$arguments = array();
-	if(count($params) > 2) {
-		for($i = 2; $i < count($params); $i++) {
-			if(trim($params[$i]) != '')
-				$arguments[] = $params[$i];
-		}
-	}
-}
-
-/**
- * Convert url to object
- */
-$chunks = explode('_', $app);
-$class = '';
-for($i = 0; $i < count($chunks); $i++) {
-	$letter = strtoupper(substr($chunks[$i], 0, 1));
-	$class .= $letter . substr($chunks[$i], 1);
-}
-$class .= 'Controller';
-
-/**
- * Convert url to method
- */
-$chunks = explode('_', $module);
-$method = ''; //
-for($i = 0; $i < count($chunks); $i++) {
-	if($i > 0) {
-		$letter = strtoupper(substr($chunks[$i], 0, 1));
-		$method .= $letter . substr($chunks[$i], 1);
-	} else {
-		$method .= $chunks[$i];
-	}
-}
-
-/**
- * Create and run the controller
- */
-include 'controllers/' . $class . '.php';
-$controller = new $class($class, __DIR__);
-call_user_func_array(array($controller, $method), $arguments);
+$router = new mfw\system\Router(__DIR__, $_REQUEST['parms']);
+$router->route();
 
 ?>
