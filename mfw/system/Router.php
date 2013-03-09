@@ -137,6 +137,30 @@ class Router {
 		}
 	}
 	
+	/** 
+	 * 
+	 * @return string
+	 */
+	public function getControllerName() {
+		return $this->controller;
+	}
+	
+	/** 
+	 * 
+	 * @return string
+	 */
+	public function getMethodName() {
+		return $this->method;
+	}
+	
+	/** 
+	 * 
+	 * @return array
+	 */
+	public function getArguments() {
+		return $this->arguments;
+	}
+	
 }
 
 }

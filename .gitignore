@@ -5,3 +5,4 @@
 htdocs/config.php
 mfw/config/config.php
 mfw/config/database.php
+mfw/tests/config.php

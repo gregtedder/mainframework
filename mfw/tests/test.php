@@ -1,5 +1,5 @@
 <?php
-require '../config/config.php';
+require 'config.php';
 
 class TEST extends PHPUnit_Framework_TestCase {
 	
