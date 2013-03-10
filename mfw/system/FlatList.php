@@ -32,8 +32,7 @@ class FlatList {
 	protected $parameters;
 	
 	/**
-	 * __construct
-	 *
+	 * 
 	 * @return void
 	 */
 	public function __construct() {
@@ -41,8 +40,7 @@ class FlatList {
 	}
 	
 	/**
-	 * setParam
-	 *
+	 * 
 	 * @param key $key
 	 * @param value $value
 	 */
@@ -54,23 +52,22 @@ class FlatList {
 	}
 	
 	/**
-	 * getParam
-	 *
+	 * 
 	 * @param string $param
-	 * @return mixed | null
+	 * @return mixed
+	 * @throws Exception
 	 */
 	public function get($param) {
 		if($this->has($param)) 
 			return $this->parameters[$param];
-		return null;
+		throw new Exception('Paramater, $param, does not exist in this collection');
 	}
 	public function __get($param) {
 		return $this->get($param);
 	}
 	
 	/**
-	 * hasParam
-	 *
+	 * 
 	 * @param string $param
 	 * @return bool
 	 */
@@ -79,6 +76,18 @@ class FlatList {
 	}
 	public function __isset($param) {
 		return $this->has($param);
+	}
+	
+	/** 
+	 * 
+	 * @param string $param
+	 */
+	public function remove($param) {
+		if($this->has($param))
+			unset($this->parameters[$param]);
+	}
+	public function __unset($param) {
+		$this->remove($param);
 	}
 	
 }
