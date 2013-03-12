@@ -1,1 +1,1 @@
-This is for Unit Testing Templates <?php echo $extra_value; ?>
+This is for Unit Testing Templates <?php echo $body; ?>

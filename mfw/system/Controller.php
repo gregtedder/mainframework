@@ -86,8 +86,6 @@ class Controller {
 		$template->render();
 	}
 	
-	// loadViewToTemplate($file_name, $tempate_name, $parameters = null)
-	
 }
 
 }

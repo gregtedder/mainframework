@@ -1,0 +1,1 @@
+The Test View <?php echo $date; ?>

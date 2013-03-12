@@ -50,7 +50,7 @@ class TRouter extends PHPUnit_Framework_TestCase {
 	public function testGetOutputBuffer() {
 		$template = new mfw\system\Template('test.php');
 		$this->assertEquals('This is for Unit Testing Templates ', $template->getOutputBuffer());
-		$template->extra_value = "Dynamic Template Content";
+		$template->body = "Dynamic Template Content";
 		$this->assertEquals('This is for Unit Testing Templates Dynamic Template Content', $template->getOutputBuffer());
 	}
 	
@@ -60,7 +60,7 @@ class TRouter extends PHPUnit_Framework_TestCase {
 		$template->render();
 		$value = ob_get_clean();
 		$this->assertEquals('This is for Unit Testing Templates ', $value);
-		$template->extra_value = "Dynamic Template Content";
+		$template->body = "Dynamic Template Content";
 		ob_start(); 
 		$template->render();
 		$value = ob_get_clean();
