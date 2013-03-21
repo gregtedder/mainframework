@@ -26,41 +26,49 @@ namespace mfw\system {
 
 /** 
  * 
- * This class manages writing to and creating 
- * daily log files for MFW.
+ * This class manages daily log files for the framework
+ * 
+ * Because php's stat function caches the results, the 
+ * overhead of running this once per connection is 
+ * acceptable. 
  * 
  */
-class Log {
+class LogCleaner {
 	
 	/** 
 	 * 
-	 * @param string $message
+	 * Use touch and a tmp file to see if log directory cleaning is necessary.
+	 * This will be done approximately every day. 
 	 */
-	public static function log($message) {
-		$append = date('Y-m-d H:i:s e');
-		if(isset($_SERVER)) {
-			$append .= ' - ' . $_SERVER['REMOTE_ADDR'];
-			$append .= ' - ' . $_SERVER['REQUEST_URI'];
+	public static function inspectLogDirectory() {
+		$filename = MFW_PATH . '/mfw/logs/cleaned.log';
+		$yesterday = time() - (1 * 24 * 60 * 60); 
+		$yesterday = time() - 1;
+		if(file_exists($filename)) {
+			$stats = stat($filename);
+			if($stats['mtime'] < $yesterday) {
+				self::cleanLogDirectory();
+				touch($filename);
+			}
+		} else {
+			touch($filename);
 		}
-		$append .= ' | ' . $message . PHP_EOL;
-		self::writeToLog($append);
 	}
 	
 	/** 
 	 * 
-	 * @param string $message
+	 * Clean the log directory
 	 */
-	private static function writeToLog($message) {
-		$file_name = MFW_PATH . '/mfw/logs/' . self::getDailyLogName();
-		file_put_contents($file_name, $message, FILE_APPEND);
-	}
-	
-	/** 
-	 * 
-	 * @return string
-	 */
-	private static function getDailyLogName() {
-		return 'mf_log-'.date('Y_m_d').'.log';
+	private static function cleanLogDirectory() {
+		if(!defined('LOG_RETENTION')) 
+			throw new \ErrorException('LOG_RETENTION must be defined in config');
+		$path = MFW_PATH . '/mfw/logs';
+		$retention = time() - (LOG_RETENTION * 24 * 60 * 60); // expires in a week
+		foreach (glob("$path/*.log") as $filename) {
+			$stats = stat($filename);
+			if($stats['mtime'] < $retention)
+				unlink($filename);
+		}
 	}
 	
 }

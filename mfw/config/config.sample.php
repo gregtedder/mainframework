@@ -29,6 +29,12 @@
  */
 DEFINE('MFW_PATH', '/Path/To/mainframework');
 
+/** 
+ * 
+ * Set the retention period of MFW log files in days 
+ */
+DEFINE('LOG_RETENTION', 7);
+
 /*
  * Now initialize what is considered the engine
  */

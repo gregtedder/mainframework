@@ -55,5 +55,10 @@ spl_autoload_register(function ($class) {
 	include ($class . '.php');
 });
 
+/** 
+ * 
+ * Clean up old MFW Log Files
+ */
+mfw\system\LogCleaner::inspectLogDirectory();
 
 ?>
