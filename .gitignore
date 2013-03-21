@@ -1,5 +1,6 @@
 .project
 .DS_Store
+*.log
 
 # Hide active configuration files
 htdocs/config.php
