@@ -22,57 +22,40 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
- /** 
-  * 
-  * grep -B1 -A1 index.php mf_log-2013_03_22.log
-  * 
-  * awk '/cron\.allow/,/pattern|^$/' file
-  * 
-  * sed -n '/index.php/,/^#/p' $file
-  * 
-  * awk '/index\.php/,/pattern|^!#/' mf_log-2013_03_22.log
-  * 
-  * 
-  * {if (a && a !~ /foo/) print a; print} {a=$0}
-  * 
-  * awk '/index\.php/{if (a && a !~ /index\.php/) print a; print} {a=$0},/^#/p' $file
-  * 
-  * 
-  *  awk '/index\.php/,/pattern|^!#/{if (a && a !~ /index\.php/) print a; print} {a=$0}' mf_log-2013_03_22.log
-  * 
-  * 
-  * 
-  * 
-  */
- 
  namespace mfw\system\log {
  
- class ExceptionLogger implements Loggable {
+ /** 
+  * 
+  * This is a base class for logging messages. 
+  */
+ class LogMessage implements Loggable {
  	
 	/** 
 	 * 
 	 * @var string
 	 */
 	private $message;
+	
+	/** 
+	 * 
+	 * @var bool
+	 */
+	private $trace;
+	
+	/** 
+	 * 
+	 * @var bool
+	 */
+	private $debug_trace;
  	
 	/** 
 	 * 
-	 * @param \Exception $e
+	 * @param string $message
 	 */
-	public function __construct(\Exception $e) {
-		$message = date('Y-m-d H:i:s e');
-		if(isset($_SERVER)) {
-			$message .= ' - ' . $_SERVER['REMOTE_ADDR'];
-			$message .= ' - ' . $_SERVER['REQUEST_URI'];
-		}
-		$message .= ' | ';
-		$message .= $e->getMessage() . PHP_EOL;
-		$message .= '#  ' . $e->getFile() . ' - Line: ';
-		$message .= $e->getLine() . ' - Code: ';
-		$message .= $e->getCode() . ' - ';
-		$message .= $e->getTraceAsString();
-		$message .= PHP_EOL;
+	public function __construct($message, $trace = true) {
 		$this->message = $message;
+		$this->trace = $trace;
+		$this->debug_trace = debug_backtrace();
 	}
 	
 	/** 
@@ -83,8 +66,55 @@
 		return $this->message;
 	}
 	
- }
+	/** 
+	 * 
+	 * @return string
+	 */
+	public function getTrace() {
+		$debug_trace = $this->debug_trace;
+		
+		if($this->trace) {
+			$e = new \Exception('');
+			$message = $e->getTraceAsString();
+		} else {
+			$message = $this->catTraceRow($debug_trace[0], 0);
+		}
+		return $message;
+	}
+	
+	/** 
+	 * 
+	 * @param array $row
+	 * @param int $row_index
+	 * @return string
+	 */
+	protected function catTraceRow(Array $row, $row_index) {
+		print_r($row);
+		$element  = '#'.$row_index.' ';
+		$element .= $row['file'].'('.$row['line'].'): ';
+		$element .= $row['function'];
+		$element .= '()';
+		return $element;
+		/*if()
+		$element = $row['args'];
+		
+		
+		#1 /Users/gregtedder/git/mainframework/mfw/system/log/MFWLog.php(55): mfw\system\log\MessageLogger->__construct(Object(mfw\system\log\LogMessage))
+		
+		[0]=>
+array(4) {
+    ["file"] => string(10) "/tmp/a.php"
+    ["line"] => int(10)
+    ["function"] => string(6) "a_test"
+    ["args"]=>
+    array(1) {
+      [0] => &string(6) "friend"*/
+    }
+
+	
+	
+}
  
- }
+}
 
 ?>

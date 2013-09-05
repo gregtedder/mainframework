@@ -43,7 +43,6 @@ class LogCleaner {
 	public static function inspectLogDirectory() {
 		$filename = MFW_PATH . '/mfw/logs/cleaned.log';
 		$yesterday = time() - (1 * 24 * 60 * 60); 
-		$yesterday = time() - 1;
 		if(file_exists($filename)) {
 			$stats = stat($filename);
 			if($stats['mtime'] < $yesterday) {

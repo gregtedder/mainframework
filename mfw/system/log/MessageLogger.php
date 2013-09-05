@@ -24,70 +24,42 @@
  
  namespace mfw\system\log {
  
- /** 
-  * 
-  * This file should not have to change, unless another
-  * direct implementation of Loggable is made.
-  * 
-  * If another Loggable is needed, simply extend either
-  * ExceptionLogger or MessageLogger.
-  */
- class MFWLog extends LogWriter {
+ class MessageLogger implements Loggable {
  	
-	/** 
-	 * 
-	 * @static
-	 * @param \Exception $e
-	 */
-	public static function logException(\Exception $e) {
-		$logger = new ExceptionLogger($e);
-		$log_path = MFW_PATH . '/mfw/logs';
-		$mfwLog = new MFWLog($log_path);
-		$mfwLog->writeLog($logger);
-	}
-	
-	/** 
-	 * 
-	 * @static
-	 * @param \Exception $e
-	 */
-	public static function logMessage(LogMessage $m) {
-		$logger = new MessageLogger($m);
-		$log_path = MFW_PATH . '/mfw/logs';
-		$mfwLog = new MFWLog($log_path);
-		$mfwLog->writeLog($logger);
-	}
-	
 	/** 
 	 * 
 	 * @var string
 	 */
-	private $log_path;
-	
+	private $message;
+ 	
 	/** 
 	 * 
-	 * @param string $log_path
+	 * @param LogMessage $logMessage
 	 */
-	public function __construct($log_path) {
-		$this->log_path = $log_path;
+	public function __construct(LogMessage $logMessage) {
+		$e = new \Exception($logMessage->getMessage()); // bad practice but saves me time right writing a track cat method
+		$message = date('Y-m-d H:i:s e');
+		if(isset($_SERVER)) {
+			$message .= ' - ' . $_SERVER['REMOTE_ADDR'];
+			$message .= ' - ' . $_SERVER['REQUEST_URI'];
+		}
+		$message .= ' | ';
+		$message .= $e->getMessage() . PHP_EOL;
+		$message .= $logMessage->getTrace();
+		$message .= PHP_EOL;
+		$this->message = $message;
 	}
 	
 	/** 
 	 * 
 	 * @return string
 	 */
-	protected function getFileName() {
-		return $this->log_path . '/' . $this->getDailyLogName();
-	}
-	
-	/** 
-	 * 
-	 * @return string
-	 */
-	private function getDailyLogName() {
-		return 'mf_log-'.date('Y_m_d').'.log';
+	public function getMessage() {
+		return $this->message;
 	}
 	
  }
  
  }
+
+ ?>
